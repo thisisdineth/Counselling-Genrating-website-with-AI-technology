@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page under designing</title>
+    <style>
+        body {
+            background-color: lightblue;
+            color: darkblue;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .error-container {
+            margin: 20% auto;
+            max-width: 600px;
+            padding: 20px;
+            border: 2px solid darkblue;
+            border-radius: 10px;
+            display: flex; /* Add this to create a flex container */
+            align-items: center; /* Vertically align items in the center */
+            justify-content: center; /* Horizontally center items */
+            flex-direction: column; /* Arrange items vertically */
+        }
+
+        h1 {
+            font-size: 36px;
+        }
+
+        p {
+            font-size: 24px;
+            display: flex; /* Add this to create a flex container */
+            align-items: center; /* Vertically align items in the center */
+        }
+
+        .my-button {
+            background-color: lightblue;
+            color: darkblue;
+            border: 2px solid darkblue;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 10px; /* Add some spacing below the text */
+        }
+
+        .my-button:hover {
+            background-color: darkblue;
+            color: lightblue;
+        }
+
+        /* Style for the image */
+        .maintenance-image {
+            width: 60px; /* Adjust the image width */
+            height: 60px; /* Adjust the image height */
+            margin-right: 10px; /* Add spacing between image and text */
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="orange" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="maintenance-image">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75a4.5 4.5 0 01-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 11-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 016.336-4.486l-3.276 3.276a3.004 3.004 0 002.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008z" />
+          </svg>
+          
+        <h1>Page is under maintenance</h1>
+        <p>
+            <a href="index.html">
+                <button class="my-button">Go Back To Home</button>
+            </a>
+        </p>
+    </div>
+</body>
+</html>
