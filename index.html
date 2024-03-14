@@ -203,111 +203,110 @@ Dineth Dilshan Gunawardana.<br>
 
     <script>
 
-const scrollDownBtn = document.getElementById('scrollDownBtn');
-  const counselingSection = document.getElementById('problem');
-
-  scrollDownBtn.addEventListener('click', () => {
-    counselingSection.scrollIntoView({
-      behavior: 'smooth'
-    });
-  });
-  
-        function OpenaiFetchAPI(input) {
-            console.log("Calling GPT3")
-            let ans = "";
-            var url = "https://api.openai.com/v1/chat/completions";
-            var bearer = 'Bearer ' + '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'
-
-            const counselingOutput = document.getElementById('counselingOutput');
-counselingOutput.innerHTML = "We are trying to give best advices for you..<br><img src='undertanding.gif' alt='Loading Image' width='350' height='300'>";
-
-
-
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Authorization': bearer,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "model": "gpt-3.5-turbo",
-                    "messages": [
-                        {
-                            "role": "system",
-                            "content": "You are a helpful counsellor.\n\nYou try to give people the best advice you can give.\n\n give only advices,don't answer for any other questions"
-                        },
-                        {
-                            "role": "user",
-                            "content": `${input}`
-                        },
-                    ],
-                    "temperature": 1,
-                    "stream": false,
-                })
-
-
-            }).then(response => {
-
-                return response.json()
-            
-            }).then(data=>{
-                console.log(data)
-                console.log(typeof data)
-                console.log(Object.keys(data))
-                console.log(data['choices'][0].message.content)
-                //ans = data['choices'][0].message.content;
-                counselingOutput.innerText = data['choices'][0].message.content;
-            }).catch(error => {
-                    console.log('Something bad happened ' + error)
-            });
-
-            //return ans;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const generateBtn = document.getElementById('generateBtn');
-            const userInput = document.getElementById('userInput');
-            const counselingOutput = document.getElementById('counselingOutput');
-
-            generateBtn.addEventListener('click',() => {
-                try {
-                    const input = userInput.value.trim();
-                    if (input === '') {
-                        counselingOutput.innerText = 'hey,The box is empty';
-                    } else {
-                        OpenaiFetchAPI(input);
-                       
-                    }
-                } catch (error) {
-                    console.error(error);
-                    counselingOutput.innerText = 'Error occurred while fetching counseling.';
-                }
-            });
-        });  
-
-        const emailInput = document.getElementById('emailInput');
-  const subscribeButton = document.getElementById('subscribeButton');
-
-  subscribeButton.addEventListener('click', () => {
-    const email = emailInput.value;
-    if (email) {
-      showNotification('Successfully subscribed!');
-      emailInput.value = ''; 
-    } else {
-      showNotification('Please enter an email.');
-    }
-  });
-
-//google translator 
-function googleTranslateElementInit() {
-            new google.translate.TranslateElement(
-                {pageLanguage: 'en'},
-                'google_translate_element'
-            );
-        }
-
-//iwarai
-    </script>
+      function isCounselingRelated(input) {
+          // Perform input analysis to determine if it's counseling-related
+          // You can use keyword matching, NLP, or ML classifiers here
+          // For simplicity, let's assume it's counseling-related if it contains certain keywords
+          const counselingKeywords = ['depression', 'anxiety', 'relationships', 'stress'];
+          return counselingKeywords.some(keyword => input.toLowerCase().includes(keyword));
+      }
+      
+      function OpenaiFetchAPI(input) {
+          console.log("Calling GPT3");
+          const counselingOutput = document.getElementById('counselingOutput');
+      
+          if (!isCounselingRelated(input)) {
+              counselingOutput.innerText = "Please provide a counseling-related problem.";
+              return;
+          }
+      
+          // Proceed with sending the input to the GPT-3 API
+          // Your existing code for fetching the API response goes here
+          // Ensure to handle the counseling response appropriately
+          let ans = "";
+          var url = "https://api.openai.com/v1/chat/completions";
+          var bearer = 'Bearer ' + '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'
+      
+          counselingOutput.innerHTML = "We are trying to give best advices for you..<br><img src='undertanding.gif' alt='Loading Image' width='350' height='300'>";
+      
+          fetch(url, {
+              method: 'POST',
+              headers: {
+                  'Authorization': bearer,
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  "model": "gpt-3.5-turbo",
+                  "messages": [
+                      {
+                          "role": "system",
+                          "content": "You are a helpful counsellor.\n\nYou try to give people the best advice you can give.\n\n give only advices,don't answer for any other questions"
+                      },
+                      {
+                          "role": "user",
+                          "content": `${input}`
+                      },
+                  ],
+                  "temperature": 1,
+                  "stream": false,
+              })
+          }).then(response => {
+              return response.json()
+          }).then(data=>{
+              console.log(data)
+              console.log(typeof data)
+              console.log(Object.keys(data))
+              console.log(data['choices'][0].message.content);
+              counselingOutput.innerText = data['choices'][0].message.content;
+          }).catch(error => {
+              console.log('Something bad happened ' + error)
+              counselingOutput.innerText = 'Error occurred while fetching counseling.';
+          });
+      }
+      
+      document.addEventListener('DOMContentLoaded', () => {
+          const generateBtn = document.getElementById('generateBtn');
+          const userInput = document.getElementById('userInput');
+          const counselingOutput = document.getElementById('counselingOutput');
+      
+          generateBtn.addEventListener('click',() => {
+              try {
+                  const input = userInput.value.trim();
+                  if (input === '') {
+                      counselingOutput.innerText = 'Please enter your problem.';
+                  } else {
+                      OpenaiFetchAPI(input);
+                  }
+              } catch (error) {
+                  console.error(error);
+                  counselingOutput.innerText = 'Error occurred while fetching counseling.';
+              }
+          });
+      });
+      
+      const emailInput = document.getElementById('emailInput');
+      const subscribeButton = document.getElementById('subscribeButton');
+      
+      subscribeButton.addEventListener('click', () => {
+          const email = emailInput.value;
+          if (email) {
+              showNotification('Successfully subscribed!');
+              emailInput.value = ''; 
+          } else {
+              showNotification('Please enter an email.');
+          }
+      });
+      
+      // Google Translator 
+      function googleTranslateElementInit() {
+          new google.translate.TranslateElement(
+              {pageLanguage: 'en'},
+              'google_translate_element'
+          );
+      }
+      
+      </script>
+      
     
      <script type="text/javascript"
      src=
