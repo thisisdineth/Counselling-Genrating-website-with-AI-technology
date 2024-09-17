@@ -208,12 +208,6 @@ Dineth Dilshan Gunawardana.<br>
     const systemPrompt = "You are a helpful counselor. Give the best advice you can.";
     const model = "mistralai/Mistral-7B-Instruct-v0.2"; // Replace with the correct model if needed
 
-    // Create an instance of OpenAI API
-    const api = new OpenAI({
-        apiKey,
-        baseURL,
-    });
-
     // Function to fetch AI response
     async function OpenaiFetchAPI(input) {
         console.log("Calling AI/ML API");
@@ -222,18 +216,30 @@ Dineth Dilshan Gunawardana.<br>
         counselingOutput.innerHTML = "We are trying to give the best advice for you..<br><img src='undertanding.gif' alt='Loading Image' width='350' height='300'>";
 
         try {
-            const completion = await api.chat.completions.create({
-                model: model,
-                messages: [
-                    { role: "system", content: systemPrompt },
-                    { role: "user", content: input }
-                ],
-                temperature: 0.7,
-                max_tokens: 256
+            const response = await fetch(`${baseURL}/chat/completions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: [
+                        { role: "system", content: systemPrompt },
+                        { role: "user", content: input }
+                    ],
+                    temperature: 0.7,
+                    max_tokens: 256
+                })
             });
 
-            const response = completion.choices[0].message.content;
-            counselingOutput.innerText = response;
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            const aiResponse = data.choices[0].message.content;
+            counselingOutput.innerText = aiResponse;
         } catch (error) {
             console.error('Error occurred while fetching counseling:', error);
             counselingOutput.innerText = 'Error occurred while fetching counseling.';
@@ -282,6 +288,7 @@ Dineth Dilshan Gunawardana.<br>
         );
     }
 </script>
+
 
 
     
