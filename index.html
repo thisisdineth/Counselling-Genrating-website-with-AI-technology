@@ -201,113 +201,88 @@ Dineth Dilshan Gunawardana.<br>
 
     </footer>
 
-    <script>
+   <script>
+    // Define API configuration
+    const baseURL = "https://api.aimlapi.com/v1";
+    const apiKey = "aba4f546964545ce80d72cc2eb7acdaf";
+    const systemPrompt = "You are a helpful counselor. Give the best advice you can.";
+    const model = "mistralai/Mistral-7B-Instruct-v0.2"; // Replace with the correct model if needed
 
-const scrollDownBtn = document.getElementById('scrollDownBtn');
-  const counselingSection = document.getElementById('problem');
-
-  scrollDownBtn.addEventListener('click', () => {
-    counselingSection.scrollIntoView({
-      behavior: 'smooth'
+    // Create an instance of OpenAI API
+    const api = new OpenAI({
+        apiKey,
+        baseURL,
     });
-  });
-  
-        function OpenaiFetchAPI(input) {
-            console.log("Calling GPT3")
-            let ans = "";
-            var url = "https://api.aimlapi.com/v1/chat/completions";
-            var bearer = 'Bearer ' + 'aba4f546964545ce80d72cc2eb7acdaf'
 
-            const counselingOutput = document.getElementById('counselingOutput');
-counselingOutput.innerHTML = "We are trying to give best advices for you..<br><img src='undertanding.gif' alt='Loading Image' width='350' height='300'>";
+    // Function to fetch AI response
+    async function OpenaiFetchAPI(input) {
+        console.log("Calling GPT-3 API");
 
+        const counselingOutput = document.getElementById('counselingOutput');
+        counselingOutput.innerHTML = "We are trying to give the best advice for you..<br><img src='undertanding.gif' alt='Loading Image' width='350' height='300'>";
 
-
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Authorization': bearer,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "model": "gpt-3.5-turbo",
-                    "messages": [
-                        {
-                            "role": "system",
-                            "content": "You are a helpful counsellor.\n\nYou try to give people the best advice you can give.\n\n give only advices,don't answer for any other questions"
-                        },
-                        {
-                            "role": "user",
-                            "content": `${input}`
-                        },
-                    ],
-                    "temperature": 1,
-                    "stream": false,
-                })
-
-
-            }).then(response => {
-
-                return response.json()
-            
-            }).then(data=>{
-                console.log(data)
-                console.log(typeof data)
-                console.log(Object.keys(data))
-                console.log(data['choices'][0].message.content)
-                //ans = data['choices'][0].message.content;
-                counselingOutput.innerText = data['choices'][0].message.content;
-            }).catch(error => {
-                    console.log('Something bad happened ' + error)
+        try {
+            const completion = await api.chat.completions.create({
+                model: model,
+                messages: [
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: input }
+                ],
+                temperature: 0.7,
+                max_tokens: 256
             });
 
-            //return ans;
+            const response = completion.choices[0].message.content;
+            counselingOutput.innerText = response;
+        } catch (error) {
+            console.error('Error occurred while fetching counseling:', error);
+            counselingOutput.innerText = 'Error occurred while fetching counseling.';
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const generateBtn = document.getElementById('generateBtn');
-            const userInput = document.getElementById('userInput');
-            const counselingOutput = document.getElementById('counselingOutput');
-
-            generateBtn.addEventListener('click',() => {
-                try {
-                    const input = userInput.value.trim();
-                    if (input === '') {
-                        counselingOutput.innerText = 'hey,The box is empty';
-                    } else {
-                        OpenaiFetchAPI(input);
-                       
-                    }
-                } catch (error) {
-                    console.error(error);
-                    counselingOutput.innerText = 'Error occurred while fetching counseling.';
-                }
-            });
-        });  
-
-        const emailInput = document.getElementById('emailInput');
-  const subscribeButton = document.getElementById('subscribeButton');
-
-  subscribeButton.addEventListener('click', () => {
-    const email = emailInput.value;
-    if (email) {
-      showNotification('Successfully subscribed!');
-      emailInput.value = ''; 
-    } else {
-      showNotification('Please enter an email.');
     }
-  });
 
-//google translator 
-function googleTranslateElementInit() {
-            new google.translate.TranslateElement(
-                {pageLanguage: 'en'},
-                'google_translate_element'
-            );
+    // Event listener for the generate button
+    document.addEventListener('DOMContentLoaded', () => {
+        const generateBtn = document.getElementById('generateBtn');
+        const userInput = document.getElementById('userInput');
+        
+        generateBtn.addEventListener('click', () => {
+            try {
+                const input = userInput.value.trim();
+                if (input === '') {
+                    counselingOutput.innerText = 'Hey, the box is empty';
+                } else {
+                    OpenaiFetchAPI(input);
+                }
+            } catch (error) {
+                console.error(error);
+                counselingOutput.innerText = 'Error occurred while fetching counseling.';
+            }
+        });
+    });
+
+    // Email subscription handling
+    const emailInput = document.getElementById('emailInput');
+    const subscribeButton = document.getElementById('subscribeButton');
+
+    subscribeButton.addEventListener('click', () => {
+        const email = emailInput.value;
+        if (email) {
+            showNotification('Successfully subscribed!');
+            emailInput.value = ''; 
+        } else {
+            showNotification('Please enter an email.');
         }
+    });
 
-//iwarai
-    </script>
+    // Google Translate initialization
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            { pageLanguage: 'en' },
+            'google_translate_element'
+        );
+    }
+</script>
+
     
      <script type="text/javascript"
      src=
