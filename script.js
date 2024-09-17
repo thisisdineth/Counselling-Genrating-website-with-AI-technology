@@ -3,8 +3,8 @@
 function OpenaiFetchAPI(input) {
     console.log("Calling GPT3")
     let ans = "";
-    var url = "https://api.openai.com/v1/chat/completions";
-    var bearer = 'Bearer ' + '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'
+    var url = "https://api.aimlapi.com/v1/chat/completions";
+    var bearer = 'Bearer ' + 'aba4f546964545ce80d72cc2eb7acdaf'
     fetch(url, {
         method: 'POST',
         headers: {
